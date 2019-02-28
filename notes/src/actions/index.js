@@ -20,84 +20,86 @@ export const SEARCH_DATA = 'SEARCH_DATA';
 
 export const LOG_IN = 'LOG_IN';
 
-export const fetchData = () => (dispatch) => {
-  dispatch({ type: FETCHING_DATA });
-  const promise = axios.get('http://localhost:8000/api/notes');
+const baseURL = 'https://lambda-notes-back-end-ck.herokuapp.com/api/notes';
 
-  promise
-    .then((response) => {
-      dispatch({ type: FETCHED_DATA, payload: response.data });
-    })
-    .catch((error) => {
-      dispatch({ type: FETCH_ERROR, payload: error });
-    });
+export const fetchData = () => dispatch => {
+	dispatch({ type: FETCHING_DATA });
+	const promise = axios.get(baseURL);
+
+	promise
+		.then(response => {
+			dispatch({ type: FETCHED_DATA, payload: response.data });
+		})
+		.catch(error => {
+			dispatch({ type: FETCH_ERROR, payload: error });
+		});
 };
 
-export const addData = (newData) => (dispatch) => {
-  dispatch({ type: ADDING_DATA });
-  const promise = axios.post('http://localhost:8000/api/notes', newData);
+export const addData = newData => dispatch => {
+	dispatch({ type: ADDING_DATA });
+	const promise = axios.post(baseURL, newData);
 
-  promise
-    .then((response) => {
-      dispatch({ type: ADDED_DATA });
-      return axios
-        .get('http://localhost:8000/api/notes')
-        .then((response) => {
-          dispatch({ type: FETCHED_DATA, payload: response.data });
-        })
-        .catch((error) => {
-          dispatch({ type: FETCH_ERROR, payload: error });
-        });
-    })
-    .catch((error) => {
-      dispatch({ type: FETCH_ERROR, payload: error });
-    });
+	promise
+		.then(response => {
+			dispatch({ type: ADDED_DATA });
+			return axios
+				.get(baseURL)
+				.then(response => {
+					dispatch({ type: FETCHED_DATA, payload: response.data });
+				})
+				.catch(error => {
+					dispatch({ type: FETCH_ERROR, payload: error });
+				});
+		})
+		.catch(error => {
+			dispatch({ type: FETCH_ERROR, payload: error });
+		});
 };
 
-export const deleteData = (id) => (dispatch) => {
-  dispatch({ type: DELETING_DATA });
-  const promise = axios.delete(`http://localhost:8000/api/notes/${id}`);
-  promise
-    .then((response) => {
-      dispatch({ type: DELETED_DATA });
-      return axios
-        .get('http://localhost:8000/api/notes')
-        .then((response) => {
-          dispatch({ type: FETCHED_DATA, payload: response.data });
-        })
-        .catch((error) => {
-          dispatch({ type: FETCH_ERROR, payload: error });
-        });
-    })
-    .catch((error) => {
-      dispatch({ type: DELETE_ERROR, payload: error });
-    });
+export const deleteData = id => dispatch => {
+	dispatch({ type: DELETING_DATA });
+	const promise = axios.delete(`${baseURL}/${id}`);
+	promise
+		.then(response => {
+			dispatch({ type: DELETED_DATA });
+			return axios
+				.get(baseURL)
+				.then(response => {
+					dispatch({ type: FETCHED_DATA, payload: response.data });
+				})
+				.catch(error => {
+					dispatch({ type: FETCH_ERROR, payload: error });
+				});
+		})
+		.catch(error => {
+			dispatch({ type: DELETE_ERROR, payload: error });
+		});
 };
 
-export const editData = (note, id) => (dispatch) => {
-  dispatch({ type: EDITING_DATA });
-  const promise = axios.put(`http://localhost:8000/api/notes/${id}`, note);
-  promise
-    .then((response) => {
-      dispatch({ type: EDITED_DATA });
-      return axios
-        .get('http://localhost:8000/api/notes')
-        .then((response) => {
-          dispatch({ type: FETCHED_DATA, payload: response.data });
-        })
-        .catch((error) => {
-          dispatch({ type: FETCH_ERROR, payload: error });
-        });
-    })
-    .catch((error) => {
-      dispatch({ type: DELETE_ERROR, payload: error });
-    });
+export const editData = (note, id) => dispatch => {
+	dispatch({ type: EDITING_DATA });
+	const promise = axios.put(`${baseURL}/${id}`, note);
+	promise
+		.then(response => {
+			dispatch({ type: EDITED_DATA });
+			return axios
+				.get(baseURL)
+				.then(response => {
+					dispatch({ type: FETCHED_DATA, payload: response.data });
+				})
+				.catch(error => {
+					dispatch({ type: FETCH_ERROR, payload: error });
+				});
+		})
+		.catch(error => {
+			dispatch({ type: DELETE_ERROR, payload: error });
+		});
 };
 
-export const searchData = (searchInput) => {
-  return { type: SEARCH_DATA, payload: searchInput };
+export const searchData = searchInput => {
+	return { type: SEARCH_DATA, payload: searchInput };
 };
 
 export const logIn = (username, password) => {
-  return { type: LOG_IN, username: username, password: password };
+	return { type: LOG_IN, username: username, password: password };
 };
