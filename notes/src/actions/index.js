@@ -79,6 +79,7 @@ export const deleteData = id => dispatch => {
 export const editData = (note, id) => dispatch => {
 	dispatch({ type: EDITING_DATA });
 	const promise = axios.put(`${baseURL}/${id}`, note);
+
 	promise
 		.then(response => {
 			dispatch({ type: EDITED_DATA });
@@ -92,7 +93,7 @@ export const editData = (note, id) => dispatch => {
 				});
 		})
 		.catch(error => {
-			dispatch({ type: DELETE_ERROR, payload: error });
+			dispatch({ type: EDIT_ERROR, payload: error });
 		});
 };
 
