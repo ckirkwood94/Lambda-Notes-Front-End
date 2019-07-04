@@ -24,13 +24,8 @@ class SingleNoteView extends Component {
 	};
 
 	render() {
-		console.log('SingleNoteView', this.props.notes);
 		return (
-			<SingleNote
-				{...this.props}
-				{...this.state}
-				handleModalVisible={this.handleModalVisible}
-			/>
+			<SingleNote {...this.props} {...this.state} handleModalVisible={this.handleModalVisible} />
 		);
 	}
 }

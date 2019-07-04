@@ -26,7 +26,6 @@ class NotesView extends Component {
 
 	handleSearch = event => {
 		event.preventDefault();
-		console.log('handleSearch');
 		this.state.searchInput === ''
 			? this.props.fetchData()
 			: this.props.searchData(this.state.searchInput);
@@ -37,28 +36,24 @@ class NotesView extends Component {
 			return <Title>Loading notes...</Title>;
 		}
 		return (
-			console.log(this.props.notes),
-			(
-				<Container>
-					<Search handleInput={this.handleInput} handleSearch={this.handleSearch} {...this.state} />
-					<Title> Your Notes:</Title>
-					<List>
-						{this.props.notes.length === 0 ? (
-							<Title>No notes to see! Go add some!</Title>
-						) : (
-							this.props.notes.map(note => {
-								return <NoteCard note={note} key={note.id} />;
-							})
-						)}
-					</List>
-				</Container>
-			)
+			<Container>
+				<Search handleInput={this.handleInput} handleSearch={this.handleSearch} {...this.state} />
+				<Title> Your Notes:</Title>
+				<List>
+					{this.props.notes.length === 0 ? (
+						<Title>No notes to see! Go add some!</Title>
+					) : (
+						this.props.notes.map(note => {
+							return <NoteCard note={note} key={note.id} />;
+						})
+					)}
+				</List>
+			</Container>
 		);
 	}
 }
 
 const mapStateToProps = state => {
-	// console.log(state);
 	return {
 		notes: state.notesReducer.notes,
 		fetchingData: state.notesReducer.fetchingData,
